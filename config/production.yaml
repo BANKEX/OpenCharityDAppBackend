@@ -1,0 +1,25 @@
+env: production
+address:
+  internal: 'http://0.0.0.0:80'
+  external: 'https://donatorscab.bankex.team'
+dirs:
+  main: '/oc_donators_cab/'
+  public: '/oc_donators_cab/public/'
+  settings: '/oc_donators_cab/settings/'
+mongoURI: 'mongodb://opch:testpass@donators_mongodb:27017/opch-test'
+metaServer: 'https://opencharity.bankex.team'
+dapp:
+  ws: 'wss://wsprovider.opencharity.bankex.team:8636'
+  token: '0x7487a0251a0701a89cade302679b1d01c3d8a44f'
+  organizations:
+  - '0xc423c6e735e7c61Ea23d039b0534b5163f8B543e'
+  - '0x8E40B81d3924F8bA764B8a79760dab33aCcDC39b'
+  - '0xe8712453C708a868c68B9e9d6fA28dA3FF8263ed'
+email:
+  user: 'testopencharity@gmail.com'
+  password: 'az128BQt'
+  host: 'smtp.gmail.com'
+  ssl: true
+cors:
+  - 'https://donatorscab.bankex.team'
+  - 'https://opencharity.bankex.team'
