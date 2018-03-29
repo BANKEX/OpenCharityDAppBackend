@@ -62,10 +62,10 @@ deploy_stage:
     - echo "$DO_DOCKER_CA_STAGE" > $DOCKER_CERT_PATH/ca.pem
     - echo "$DO_DOCKER_CERT_STAGE" > $DOCKER_CERT_PATH/cert.pem
     - echo "$DO_DOCKER_KEY_STAGE" > $DOCKER_CERT_PATH/key.pem
-    - docker login -u $DOCKER_USER -p $DOCKER_TOKEN
     - echo "NODE_ENV=$NODE_ENV" >> .env; echo "NODE_PATH=$NODE_PATH" >> .env
     - echo "MONGODB_ADMIN_PASS=$MONGODB_ADMIN_PASS" >> .env; echo "MONGODB_STAGE_PASS=$MONGODB_STAGE_PASS" >> .env
   script:
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
     - docker-compose -f docker/docker-compose.yml down
     - docker rmi $CI_REGISTRY_IMAGE || echo "image not exist"
     - docker pull $CI_REGISTRY_IMAGE
