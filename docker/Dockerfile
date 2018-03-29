@@ -5,7 +5,6 @@ RUN mkdir /oc_client_back
 
 WORKDIR /oc_client_back
 
-RUN mkdir /oc_client_back/abi
 ADD /build /oc_client_back/build
 ADD /config /oc_client_back/config
 ADD /public /oc_client_back/public
