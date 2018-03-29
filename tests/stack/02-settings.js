@@ -32,9 +32,6 @@ describe('--------Settings-----------', () => {
     const options = {
       method: 'GET',
       uri: mainURL + '/api/settings/getOrganizationList/'+type,
-      headers: {
-        'Content-Type' : 'application/json'
-      }
     };
     saveState = JSON.parse(await rp(options));
     assert.equal(saveState.type, type);
@@ -66,9 +63,6 @@ describe('--------Settings-----------', () => {
     const options = {
       method: 'GET',
       uri: mainURL + '/api/settings/getOrganizationList/'+type,
-      headers: {
-        'Content-Type' : 'application/json'
-      }
     };
     const initData = JSON.parse(await rp(options));
     assert.equal(initData.type, type);

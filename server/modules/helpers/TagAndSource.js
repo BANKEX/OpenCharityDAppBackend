@@ -22,11 +22,14 @@ const add = async (ctx, collection) => {
   if (ctx.request.header['content-type']!='application/json' &&
     ctx.request.header['content-type']!='application/x-www-form-urlencoded') throw new AppError(400, 10);
   if (!ctx.request.body[prop]) throw new AppError(406, 601);
-  const propParsed = JSON.parse(ctx.request.body[prop]);
+  const propParsed = ctx.request.body[prop];
   if (!Array.isArray(propParsed)) throw new AppError(406, 600);
   if (!propParsed.every((el) => (isNaN(Number(el))))) throw new AppError(406, 602);
-  const propForQuery = propParsed.map((el) => ({[prop]: el}));
-  return await Collection.create(propForQuery);
+  return await Promise.all(
+    propParsed.map(async (el) => (
+      await Collection.findOneOrCreate({[prop]: el})
+    ))
+  );
 };
 
 const del = async (ctx, collection) => {
@@ -35,7 +38,7 @@ const del = async (ctx, collection) => {
   if (ctx.request.header['content-type']!='application/json' &&
     ctx.request.header['content-type']!='application/x-www-form-urlencoded') throw new AppError(400, 10);
   if (!ctx.request.body[prop]) throw new AppError(406, 601);
-  const propParsed = JSON.parse(ctx.request.body[prop]);
+  const propParsed = ctx.request.body[prop];
   if (!Array.isArray(propParsed)) throw new AppError(406, 600);
   const type = getType(propParsed, prop);
   return await Collection.deleteMany({[type]: propParsed});
@@ -47,7 +50,7 @@ const find = async (ctx, collection) => {
   if (ctx.request.header['content-type']!='application/json' &&
     ctx.request.header['content-type']!='application/x-www-form-urlencoded') throw new AppError(400, 10);
   if (!ctx.request.body[prop]) throw new AppError(406, 601);
-  const propParsed = JSON.parse(ctx.request.body[prop]);
+  const propParsed = ctx.request.body[prop];
   if (!Array.isArray(propParsed)) throw new AppError(406, 600);
   const type = getType(propParsed, prop);
   const preRet = await Collection.find({[type]: propParsed});
@@ -60,7 +63,7 @@ const edit = async (ctx, collection) => {
   if (ctx.request.header['content-type']!='application/json' &&
     ctx.request.header['content-type']!='application/x-www-form-urlencoded') throw new AppError(400, 10);
   if (!ctx.request.body[prop]) throw new AppError(406, 601);
-  const propParsed = JSON.parse(ctx.request.body[prop]);
+  const propParsed = ctx.request.body[prop];
   if (!Array.isArray(propParsed)) throw new AppError(406, 600);
   if (propParsed.length != 2) throw new AppError(406, 600);
   return await Collection.update({ [prop]: propParsed[0] }, { [prop]: propParsed[1] });

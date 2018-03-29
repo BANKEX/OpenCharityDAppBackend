@@ -7,286 +7,181 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
 
-  <title>OpenCharityDonatorsCab</title>
+  <title>oc_client_back</title>
   <style>
     .resp {
       overflow-x: scroll;
       min-height: 100px;
       white-space: nowrap;
     }
-    .ev {
-      position: fixed;
-      height: 20px;
-      width: 20px;
-      left: 20px;
-      border-radius: 30px;
-      color: white;
-      margin-top: auto;
-    }
-    .newCE {
-      top: 20px;
-      background-color: orangered;
-      display: none;
-    }
-    .newID {
-      top: 50px;
-      background-color: cadetblue;
-      display: none;
+    .pan {
+      margin-left: 1em;
+      margin-right: 1em;
     }
   </style>
 </head>
 <body>
-  <div class="ev newCE" align="center" id="newEventCE">0</div>
-  <div class="ev newID" align="center" id="newEventID">0</div>
-  <div class="container">
-    <h1>OpenCharityDonatorsCab testAPI</h1>
+  <div class="pan">
+    <h1>oc_client_back testAPI</h1>
 
     <div class="panel-group" id="accordion">
       <div class="panel panel-default">
         <div class="panel-heading">
           <h4 class="panel-title">
             <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">
-              Users API
+              Tag & Source API
             </a>
           </h4>
         </div>
         <div id="collapse1" class="panel-collapse collapse">
-          <div class="panel-body">
+          <div class="panel-body pan">
             <div class="row">
-              <h3>User signup</h3>
-              <div class="col-sm-6">
-                <input class="form-control" type="text" placeholder="email" id="emailSU">
-                <input class="form-control" type="text" placeholder="firstName" id="firstNameSU">
-                <input class="form-control" type="text" placeholder="lastName" id="lastNameSU">
-                <input class="form-control" type="password" placeholder="password" id="passwordSU">
-                <button class="btn btn-success" onClick="userSignup()">Send</button>
+              <form id="ts">
+              <div class="radio">
+                <label>
+                  <input type="radio" name="choice" value="tag" checked>
+                  Tag
+                </label>
               </div>
-              <div class="col-sm-6 resp" id="respSU"></div>
+              <div class="radio">
+                <label>
+                  <input type="radio" name="choice" value="source">
+                  Source
+                </label>
+              </div>
+              </form>
             </div>
 
             <div class="row">
-              <h3>User login</h3>
+              <h3>GET all</h3>
               <div class="col-sm-6">
-                <input class="form-control" type="text" placeholder="email" id="emailLG">
-                <input class="form-control" type="password" placeholder="password" id="passwordLG">
-                <button class="btn btn-success" onClick="userLogin()">Send</button>
-              </div>
-              <div class="col-sm-6 resp" id="respLG"></div>
-            </div>
-
-            <div class="row">
-              <h3>User logout</h3>
-              <div class="col-sm-6">
-                <button class="btn btn-success" onClick="userLogout()">Send</button>
-              </div>
-              <div class="col-sm-6 resp" id="respLGT"></div>
-            </div>
-
-            <div class="row">
-              <h3>User get info</h3>
-              <div class="col-sm-6">
-                <button class="btn btn-success" onClick="userGet()">Send</button>
-              </div>
-              <div class="col-sm-6 resp" id="respGT"></div>
-            </div>
-
-            <div class="row">
-              <h3>User change</h3>
-              <div class="col-sm-6">
-                <input class="form-control" type="text" placeholder="firstName" id="firstNameCH">
-                <input class="form-control" type="text" placeholder="lastName" id="lastNameCH">
-                <input class="form-control" type="text" placeholder="tags" id="tagsCH">
-                <input class="form-control" type="text" placeholder="trans" id="transCH">
-                <input class="form-control" type="password" placeholder="password" id="passwordCH">
-                <input class="form-control" type="password" placeholder="new password" id="newpasswordCH">
-                <button class="btn btn-success" onClick="userChange()">Send</button>
-              </div>
-              <div class="col-sm-6 resp" id="respCH"></div>
-            </div>
-
-            <div class="row">
-              <h3>User delete</h3>
-              <div class="col-sm-6">
-                <input class="form-control" type="password" placeholder="password" id="passwordDL">
-                <button class="btn btn-success" onClick="userDelete()">Send</button>
-              </div>
-              <div class="col-sm-6 resp" id="respDL"></div>
-            </div>
-
-            <div class="row">
-              <h3>User forgot</h3>
-              <div class="col-sm-6">
-                <input class="form-control" type="text" placeholder="email" id="emailFG">
-                <button class="btn btn-success" onClick="userForgot()">Send</button>
-              </div>
-              <div class="col-sm-6 resp" id="respFG"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <h4 class="panel-title">
-            <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">
-              DAPP API
-            </a>
-          </h4>
-        </div>
-        <div id="collapse2" class="panel-collapse collapse in">
-          <div class="panel-body">
-            <div class="row">
-              <h3>Dapp getOrganizations</h3>
-              <div class="col-sm-6">
-                <button class="btn btn-success" onClick="getOrganizations()">Send</button>
-              </div>
-              <div class="col-sm-6 resp" id="respORG"></div>
-            </div>
-
-            <div class="row">
-              <h3>Dapp getCharityEvents</h3>
-              <div class="col-sm-6">
-                <input class="form-control" type="text" placeholder="orgAddress" id="orgCE" value="all">
-                <div>
-                  <span>From DB: <input type="checkbox" id="checkCE"></span>
-                </div>
-                <button class="btn btn-success" onClick="getCharityEvents()">Send</button>
-              </div>
-              <div class="col-sm-6 resp" id="respCE"></div>
-            </div>
-
-            <div class="row">
-              <h3>Dapp getIncomingDonations</h3>
-              <div class="col-sm-6">
-                <input class="form-control" type="text" placeholder="orgAddress" id="orgID" value="all">
-                <div>
-                  <span>From DB: <input type="checkbox" id="checkID"></span>
-                </div>
-                <button class="btn btn-success" onClick="getIncomingDonations()">Send</button>
-              </div>
-              <div class="col-sm-6 resp" id="respID"></div>
-            </div>
-
-            <div class="row">
-              <h3>Dapp getCharityEvent/:hash</h3>
-              <div class="col-sm-6">
-                <input class="form-control" type="text" placeholder="hashCE" id="hashCE1">
-                <div>
-                  <span>From DB: <input type="checkbox" id="checkCE1"></span>
-                </div>
-                <button class="btn btn-success" onClick="getCharityEvent1()">Send</button>
-              </div>
-              <div class="col-sm-6 resp" id="respCE1"></div>
-            </div>
-
-            <div class="row">
-              <h3>Dapp getIncomingDonation/:hash</h3>
-              <div class="col-sm-6">
-                <input class="form-control" type="text" placeholder="hashID" id="hashID1">
-                <div>
-                  <span>From DB: <input type="checkbox" id="checkID1"></span>
-                </div>
-                <button class="btn btn-success" onClick="getIncomingDonation1()">Send</button>
-              </div>
-              <div class="col-sm-6 resp" id="respID1"></div>
-            </div>
-
-            <div class="row">
-              <h3>Dapp filter charityEvent</h3>
-              <div class="col-sm-6">
-                <textarea class="form-control" id="filterCE" rows="4">{}</textarea>
-                <button class="btn btn-success" onClick="filterCharityEvent()">Send</button>
-              </div>
-              <div class="col-sm-6 resp" id="respFCE"></div>
-            </div>
-
-            <div class="row">
-              <h3>Dapp filter incomingDonation</h3>
-              <div class="col-sm-6">
-                <textarea class="form-control" id="filterID" rows="4">{}</textarea>
-                <button class="btn btn-success" onClick="filterIncomingDonation()">Send</button>
-              </div>
-              <div class="col-sm-6 resp" id="respFID"></div>
-            </div>
-
-            <div class="row">
-              <h3>Search metadata</h3>
-              <div class="col-sm-6">
-                <input class="form-control" type="text" placeholder="searchRequest" id="textSI" value="*">
-                <select id="selSI">
-                  <option value="" selected>other...</option>
-                  <option value="organization">organization</option>
-                  <option value="charityEvent">charityEvent</option>
-                  <option value="incomingDonation">incomingDonation</option>
-                </select>
-                <input class="form-control" type="text" placeholder="addition (split comma)" id="addSI">
                 <div class="input-group">
-                  <span class="input-group-addon">pageSize</span>
-                  <input class="form-control" type="number" id="sizeSI" value="10" step="10">
+                  <span class="input-group-addon">request</span>
+                  <input type="text" class="form-control" id="allRequestTS">
+                  <span class="input-group-btn">
+                    <button class="btn btn-success" type="button" onClick="allTS()">Send</button>
+                  </span>
                 </div>
+              </div>
+              <div class="col-sm-6 resp" id="respAllTS"></div>
+            </div>
+
+            <div class="row">
+              <h3>POST find</h3>
+              <div class="col-sm-6">
                 <div class="input-group">
-                  <span class="input-group-addon">page</span>
-                  <input class="form-control" type="number" id="pageSI" value="1" step="1">
+                  <span class="input-group-addon">tag or source</span>
+                  <input type="text" class="form-control" id="findPropTS" value="[]">
+                  <span class="input-group-btn">
+                    <button class="btn btn-success" type="button" onClick="findTS()">Send</button>
+                  </span>
                 </div>
-                <div>
-                  <span>From DB: <input type="checkbox" id="checkSI"></span>
-                </div>
-                <button class="btn btn-success" onClick="search()">Send</button>
               </div>
-              <div class="col-sm-6 resp" id="respSI"></div>
+              <div class="col-sm-6 resp" id="respFindTS"></div>
             </div>
+
+            <div class="row">
+              <h3>POST add</h3>
+              <div class="col-sm-6">
+                <div class="input-group">
+                  <span class="input-group-addon">tag or source</span>
+                  <input type="text" class="form-control" id="addPropTS" value="[]">
+                  <span class="input-group-btn">
+                    <button class="btn btn-success" type="button" onClick="addTS()">Send</button>
+                  </span>
+                </div>
+              </div>
+              <div class="col-sm-6 resp" id="respAddTS"></div>
+            </div>
+
+            <div class="row">
+              <h3>POST edit</h3>
+              <div class="col-sm-6">
+                <div class="input-group">
+                  <span class="input-group-addon">tag or source</span>
+                  <input type="text" class="form-control" id="editPropTS" value="['old','new']">
+                  <span class="input-group-btn">
+                    <button class="btn btn-success" type="button" onClick="editTS()">Send</button>
+                  </span>
+                </div>
+              </div>
+              <div class="col-sm-6 resp" id="respEditTS"></div>
+            </div>
+
+            <div class="row">
+              <h3>POST del</h3>
+              <div class="col-sm-6">
+                <div class="input-group">
+                  <span class="input-group-addon">tag or source</span>
+                  <input type="text" class="form-control" id="delPropTS" value="[]">
+                  <span class="input-group-btn">
+                    <button class="btn btn-success" type="button" onClick="delTS()">Send</button>
+                  </span>
+                </div>
+              </div>
+              <div class="col-sm-6 resp" id="respDelTS"></div>
+            </div>
+
+
           </div>
         </div>
       </div>
 
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <h4 class="panel-title">
-            <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">
-              DB API
-            </a>
-          </h4>
-        </div>
-        <div id="collapse3" class="panel-collapse collapse">
-          <div class="panel-body">
-            <div class="row">
-              <h3>GET users</h3>
-              <div class="col-sm-6">
-                <button class="btn btn-success" onClick="getUsers()">Send</button>
-              </div>
-              <div class="col-sm-6 resp" id="respUS"></div>
-            </div>
+      <div class="panel-group" id="accordion">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">
+                Settings API
+              </a>
+            </h4>
+          </div>
+          <div id="collapse2" class="panel-collapse collapse">
+            <div class="panel-body pan">
 
-            <div class="row">
-              <h3>Drop [users] collection</h3>
-              <div class="col-sm-6">
-                <input class="form-control" type="password" placeholder="password" id="passDropUS">
-                <button class="btn btn-danger" onClick="dropUS()">Drop Users</button>
+              <div class="row">
+                <div class="col-sm-3">
+                  <form id="settings">
+                    <div class="radio">
+                      <label>
+                        <input type="radio" name="choice" value="0" checked onClick="getList()">
+                        Default
+                      </label>
+                    </div>
+                    <div class="radio">
+                      <label>
+                        <input type="radio" name="choice" value="-1" onClick="getList()">
+                        Development
+                      </label>
+                    </div>
+                  </form>
+                </div>
+                <div class="col-sm-3">
+                  <button class="btn btn-success" type="button" onClick="setList()">Set</button>
+                </div>
+                <div class="col-sm-6 resp" id="respSet"></div>
               </div>
-              <div class="col-sm-6 resp" id="respDropUS"></div>
-            </div>
 
-            <div class="row">
-              <h3>GET organizations</h3>
-              <div class="col-sm-6">
-                <button class="btn btn-success" onClick="getOrgs()">Send</button>
+              <div class="row">
+                <h3>POST setOrganizationList</h3>
+                <p>Org addresses:</p>
+                <textarea class="form-control" id="listOrg" rows="4"></textarea>
+                <p>Organization abi:</p>
+                <textarea class="form-control" id="abiOrg" rows="4"></textarea>
+                <p>CharityEvent abi:</p>
+                <textarea class="form-control" id="abiCE" rows="4"></textarea>
+                <p>IncomingDonation abi:</p>
+                <textarea class="form-control" id="abiID" rows="4"></textarea>
+                <p>Token abi:</p>
+                <textarea class="form-control" id="abiToken" rows="4"></textarea>
+                </div>
               </div>
-              <div class="col-sm-6 resp" id="respORGs"></div>
-            </div>
 
-            <div class="row">
-              <h3>Drop [organ]ization and other collections & init</h3>
-              <div class="col-sm-6">
-                <input class="form-control" type="password" placeholder="password" id="passDropOrg">
-                <button class="btn btn-danger" onClick="dropOrg()">Drop Org</button>
-              </div>
-              <div class="col-sm-6 resp" id="respDropOrg"></div>
             </div>
           </div>
         </div>
-      </div>
+
     </div>
   </div>
 
