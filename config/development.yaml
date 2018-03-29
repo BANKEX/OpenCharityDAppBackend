@@ -7,17 +7,5 @@ dirs:
   public: 'C:/NodeJS/oc_client_back/public/'
   settings: 'C:/NodeJS/oc_client_back/settings/'
 mongoURI: 'mongodb://user:password@ds223019.mlab.com:23019/oc_client_back'
-# metaServer: 'https://opencharity.staging.bankex.team'
 metaServer: 'http://127.0.0.1:8081'
-dapp:
-  ws: 'wss://wsprovider.staging.bankex.team:8636'
-  token: '0x6a183381d14371b4a228cca37802c09bd166ba9e'
-  smartContacts: 'https://donatorscab.staging.bankex.team/api/dapp/smarts'
-  organizations:
-  - '0x400723D5696c60cCb5205682d3888644C7E373AF'
-  - '0xB7f5f2f6D8Ec9341D98D2435bB00de9163e77476'
-  - '0x314Ff8C2768f33F68B7a1Dd17dD7df8C819047F4'
-  - '0x47f6aa20C90B81b5b1115B989eD853e9EFA8F5B0'
-  - '0xf51dbaa3264f2dc1a950378416583be7a639ce17'
-  - '0x184435d6c65fd01f3ef4bb1018dc75503c3f802f'
 cors: '*'

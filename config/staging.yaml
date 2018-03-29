@@ -1,27 +1,16 @@
 env: staging
 address:
   internal: 'http://0.0.0.0:80'
-  external: 'https://donatorscab.staging.bankex.team'
+  external: 'https://opencharity.staging.bankex.team'
 dirs:
-  main: '/oc_donators_cab/'
-  public: '/oc_donators_cab/public/'
-  settings: '/oc_donators_cab/settings/'
-mongoURI: 'mongodb://opch:testpass@donators_mongodb:27017/opch-test'
-metaServer: 'https://opencharity.staging.bankex.team'
-dapp:
-  ws: 'wss://wsprovider.staging.bankex.team:8636'
-  token: '0x6a183381d14371b4a228cca37802c09bd166ba9e'
-  organizations:
-  - '0x400723D5696c60cCb5205682d3888644C7E373AF'
-  - '0xB7f5f2f6D8Ec9341D98D2435bB00de9163e77476'
-  - '0x314Ff8C2768f33F68B7a1Dd17dD7df8C819047F4'
-email:
-  user: 'testopencharity@gmail.com'
-  password: 'az128BQt'
-  host: 'smtp.gmail.com'
-  ssl: true
+  main: '/oc_client_back/'
+  public: '/oc_client_back/public/'
+  settings: '/oc_client_back/settings/'
+mongoURI: 'mongodb://opch:testpass@oc_client_mongodb:27017/opch'
+metaServer: 'https://meta.staging.bankex.team'
 cors:
   - 'https://donatorscab.staging.bankex.team'
   - 'https://opencharity.staging.bankex.team'
+  - 'https://meta.staging.bankex.team'
   - 'http://127.0.0.1:8080'
   - 'http://127.0.0.1:8081'
