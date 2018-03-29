@@ -1,0 +1,41 @@
+version: '3'
+
+volumes:
+    oc_client_mongodb_data:
+    oc_client_mongodb_config:
+
+services:
+  oc_client_back:
+    image: $CI_REGISTRY_IMAGE
+    container_name: oc_client_back
+    restart: always
+    expose:
+      - "80"
+    environment:
+      NODE_ENV: $NODE_ENV
+      NODE_PATH: $NODE_PATH
+    command: npm run staging
+    depends_on:
+      - oc_client_mongodb
+
+  oc_client_mongodb:
+    image: aashreys/mongo-auth:latest
+    container_name: oc_client_mongodb
+    restart: always
+    volumes: 
+      - oc_client_mongodb_data:/data/db
+      - oc_client_mongodb_config:/data/configdb
+    expose:
+      - "27017"
+    environment:
+      AUTH: "yes"
+      MONGODB_ADMIN_USER: admin
+      MONGODB_ADMIN_PASS: $MONGODB_ADMIN_PASS
+      MONGODB_APPLICATION_DATABASE: opch
+      MONGODB_APPLICATION_USER: opch
+      MONGODB_APPLICATION_PASS: $MONGODB_STAGE_PASS
+
+networks:
+  default:
+    external:
+      name: frontend_default

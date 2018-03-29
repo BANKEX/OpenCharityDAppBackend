@@ -1,0 +1,95 @@
+stages:
+  - setup
+  - build-node
+  - release
+  - deploy-stage
+  - tests-stage
+  - deploy-prod
+  - tests-prod
+
+cache:
+  paths:
+    - node_modules/
+
+setup:
+  image: node:alpine
+  stage: setup
+  script:
+    - apk add --update git
+    - apk --no-cache add g++ gcc libgcc libstdc++ linux-headers make python
+    - npm install --quiet node-gyp -g
+    - npm install
+    - npm rebuild bcrypt --build-from-source
+
+build-node:
+  image: node:alpine
+  stage: build-node
+  script:
+    - npm run build
+  artifacts:
+    paths:
+      - build
+      - node_modules/
+      - config
+      - public
+      - server
+      - settings
+      - package.json
+    expire_in: 12h
+
+release:
+  image: docker:latest
+  stage: release
+  before_script:
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+    - sed -i '3i\ENV MONGODB_STAGE_PASS '$MONGODB_STAGE_PASS'\' docker/Dockerfile ; sed -i '3i\ENV MONGODB_PROD_PASS '$MONGODB_PROD_PASS'\' docker/Dockerfile
+  script:
+    - docker build -q -f docker/Dockerfile -t $CI_REGISTRY_IMAGE .
+    - docker push $CI_REGISTRY_IMAGE
+
+deploy_stage:
+  stage: deploy-stage
+  image: tmaier/docker-compose
+  variables:
+    DOCKER_HOST: "tcp://charity-staging-do.bankex.team:2376"
+    DOCKER_TLS_VERIFY: "1"
+    EMAIL: "om@bankexfoundation.org"
+    NODE_ENV: "staging"
+    NODE_PATH: "./build"
+    DOCKER_CERT_PATH: "/certs"
+  before_script:
+    - mkdir -p $DOCKER_CERT_PATH
+    - echo "$DO_DOCKER_CA_STAGE" > $DOCKER_CERT_PATH/ca.pem
+    - echo "$DO_DOCKER_CERT_STAGE" > $DOCKER_CERT_PATH/cert.pem
+    - echo "$DO_DOCKER_KEY_STAGE" > $DOCKER_CERT_PATH/key.pem
+    - docker login -u $DOCKER_USER -p $DOCKER_TOKEN
+    - echo "NODE_ENV=$NODE_ENV" >> .env; echo "NODE_PATH=$NODE_PATH" >> .env
+    - echo "MONGODB_ADMIN_PASS=$MONGODB_ADMIN_PASS" >> .env; echo "MONGODB_STAGE_PASS=$MONGODB_STAGE_PASS" >> .env
+  script:
+    - docker-compose -f docker/docker-compose.yml down
+    - docker rmi $CI_REGISTRY_IMAGE || echo "image not exist"
+    - docker pull $CI_REGISTRY_IMAGE
+    - docker-compose -f docker/docker-compose.yml up -d oc_client_mongodb
+    - sleep 15
+    - docker-compose -f docker/docker-compose.yml up -d oc_client_back
+  environment:
+    name: staging
+    url: https://opencharity.staging.bankex.team
+  when: manual
+  allow_failure: false
+
+tests-stage:
+  image: docker:latest
+  stage: tests-stage
+  variables:
+    DOCKER_HOST: "tcp://charity-staging-do.bankex.team:2376"
+    DOCKER_TLS_VERIFY: "1"
+    NODE_ENV: "staging"
+    DOCKER_CERT_PATH: "/certs"
+  before_script:
+    - mkdir -p $DOCKER_CERT_PATH
+    - echo "$DO_DOCKER_CA_STAGE" > $DOCKER_CERT_PATH/ca.pem
+    - echo "$DO_DOCKER_CERT_STAGE" > $DOCKER_CERT_PATH/cert.pem
+    - echo "$DO_DOCKER_KEY_STAGE" > $DOCKER_CERT_PATH/key.pem
+  script:
+    - docker exec -i -e NODE_ENV=$NODE_ENV oc_client_back sh -c "npm i mocha -g && npm run test"
