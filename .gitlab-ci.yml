@@ -33,7 +33,6 @@ build-node:
       - config
       - public
       - server
-      - settings
       - package.json
     expire_in: 12h
 
