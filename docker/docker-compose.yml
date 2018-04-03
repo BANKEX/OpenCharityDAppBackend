@@ -3,6 +3,7 @@ version: '3'
 volumes:
     oc_client_mongodb_data:
     oc_client_mongodb_config:
+    oc_client_settings:
 
 services:
   oc_client_back:
@@ -17,6 +18,8 @@ services:
     command: npm run staging
     depends_on:
       - oc_client_mongodb
+    volumes:
+      - oc_client_settings:/oc_client_back/settings
 
   oc_client_mongodb:
     image: aashreys/mongo-auth:latest
