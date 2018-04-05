@@ -1,0 +1,6 @@
+env: development
+address:
+  internal: 'http://127.0.0.1:8082'
+  external: 'http://127.0.0.1:8082'
+mongoURI: ******** set your mongo as 'mongodb://USER:PASSWORD@DB' ********
+cors: '*'

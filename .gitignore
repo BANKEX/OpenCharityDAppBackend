@@ -9,3 +9,4 @@ package-lock.json
 /abi/
 /_trash/
 /settings/
+/config/development.yaml

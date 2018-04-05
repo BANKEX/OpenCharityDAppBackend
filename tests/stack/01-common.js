@@ -9,7 +9,7 @@ console.log(mainURL);
 console.log(process.env.NODE_ENV);
 
 describe('--------Common tests-----------', ()=> {
-  it('Сервер отвечает на запросы', (done)=> {
+  it('Correct /api/testapi', (done)=> {
     request(mainURL + '/api/testAPI', (err, resp, body) => {
       if (err) return done(err);
       assert.equal(resp.statusCode, 200);
@@ -17,7 +17,7 @@ describe('--------Common tests-----------', ()=> {
     });
   });
 
-  it('Корректно отдает testAPI.ejs', (done)=> {
+  it('Correct testAPI.ejs', (done)=> {
     request(mainURL + '/api/testAPI', (err, resp, body) => {
       if (err) return done(err);
       assert.equal(body.indexOf('oc_client_back') != -1, true);
@@ -25,10 +25,10 @@ describe('--------Common tests-----------', ()=> {
     });
   });
 
-  it('HTML Ошибки при запросе /api/hello', (done)=> {
+  it('Incorrect /api/hello', (done)=> {
     request(mainURL + '/api/hello', (err, resp, body) => {
       if (err) return done(err);
-      assert.equal(body.indexOf('Запрос к API некорректен') != -1, true);
+      assert.equal(body.indexOf('Wrong API request') != -1, true);
       done();
     });
   });

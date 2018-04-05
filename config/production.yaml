@@ -2,12 +2,7 @@ env: production
 address:
   internal: 'http://0.0.0.0:80'
   external: 'https://opencharity.bankex.team'
-dirs:
-  main: '/oc_client_back/'
-  public: '/oc_client_back/public/'
-  settings: '/oc_client_back/settings/'
 mongoURI: 'mongodb://opch:testpass@oc_client_mongodb:27017/opch'
-metaServer: 'https://meta.bankex.team'
 cors:
   - 'https://donatorscab.bankex.team'
   - 'https://opencharity.bankex.team'

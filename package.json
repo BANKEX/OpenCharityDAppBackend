@@ -1,5 +1,5 @@
 {
-  "name": "oc_client_bck",
+  "name": "oc_client_back",
   "version": "1.0.0",
   "description": "Back for oc_client",
   "repository": "https://git.bankex.team/open_charity/oc_client_back.git",
@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "lint": "eslint server",
-    "startDev": "cross-env NODE_ENV=development NODE_PATH=./server babel-node server/server.js",
+    "start": "cross-env NODE_ENV=development NODE_PATH=./server babel-node server/server.js",
     "development": "startDev.bat",
     "test": "mocha --timeout 10000 tests/index-test.js",
     "clean": "rm -rf build && mkdir build",

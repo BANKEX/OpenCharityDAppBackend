@@ -1,6 +1,10 @@
 import { DIRS } from 'configuration';
 import fs from 'fs';
 import AppError from '../../utils/AppErrors.js';
+import path from 'path';
+
+const settingsDIR = path.resolve(__dirname, '../../../', DIRS.settings);
+
 
 const setOrganizationList = async (ctx) => {
   if (ctx.request.header['content-type']!='application/json' &&
@@ -18,17 +22,17 @@ const setOrganizationList = async (ctx) => {
   ) throw new AppError(406, 600);
 
   const listObject = { list, type, abis };
-  const path = DIRS.settings+type+'.json';
-  if (fs.existsSync(path)) delete require.cache[require.resolve(path)];
-  fs.writeFileSync(path, JSON.stringify(listObject));
+  const jsonPath = path.resolve(settingsDIR, type+'.json');
+  if (fs.existsSync(jsonPath)) delete require.cache[require.resolve(jsonPath)];
+  fs.writeFileSync(jsonPath, JSON.stringify(listObject));
   ctx.body = 'Ok';
 };
 
 const getOrganizationList = async (ctx) => {
   const type = Number(ctx.params.type);
   if (type!=0 && type!=-1) throw new AppError(406, 600);
-  const path = DIRS.settings+type+'.json';
-  ctx.body = require(path);
+  const jsonPath = path.resolve(settingsDIR, type+'.json');
+  ctx.body = require(jsonPath);
 };
 
 export default {

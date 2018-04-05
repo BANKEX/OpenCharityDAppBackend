@@ -1,104 +1,54 @@
+![logo](https://opencharity.staging.bankex.team/api/logo.png)
 # oc_client_back
 
-## Установка
-1. склонировать репозиторий
-2. npm install
-3. настроить файлы config: development.yaml, staging.yaml и production.yaml
-4. Для запуска в development-окружении: npm run development
-5. Для запуска в окружениях staging | production:
-    * создать пустую папку build в корне проекта
-    * npm run build
-    * npm run staging | production
+Backend API for oc_client.
 
-## Тестирование
-1. Установить mocha глобально: npm i mocha -g
-2. Тестирование:
-    * запустить сервер в требуемом окружении (development | staging | production)
-    * запустить тестирование npm run testDev | testStage | testProd
+# Getting Started
 
-## Страница тестирования API
-По адресу /api/testAPI доступен интерфейс тестирования всех функций API.<br/>
-Все фронтэнд-функции для работы с API см. в /public/api/testAPI.js
+## Require
+* NodeJS version >= 8.9
 
+## Install
+1. `git clone` this repo
+2. `cd oc_client_back`
+3. `npm install`
+
+## Run
+Environments run:
+    * development: `npm run development`
+    * staging:
+        - make dir build
+        - `npm run build`
+        - `npm run staging`
+    * production:
+        - make dir build
+        - `npm run build`
+        - `npm run production`
+
+## Usage
+Development. Server running on 127.0.0.1:8082. Test page - /api/testapi
+
+## Tests
+1. Install mocha globally: `npm i mocha -g`
+2. Run server on your environment
+3. Environments:
+    * development: `npm run testDev`
+    * staging: `npm run testStage`
+    * production: `npm run testProd`
+
+
+# API description
 ## Tag & Source
-Для Source все точно также как для Tag через /api/source/... и все поля tag заменить на source.
+Source API equivalent Tag API, but /api/source/... and all fields have source instead tag.
 
-### POST /api/tag/find
-Конвертация tag в tagID и обратно.<br/>
-Принимает строковый или числовой массив tag.<br/>
-Если массив полностью числовой, считается, что это массив tagID, в этом случае возвращает массив tag,
-иначе возвращает массив tagID (и только найденные совпадения)<br/>
-!Входной и возвратный массив не соответствуют друг другу поэлементно!<br/>
-Ненайденный tag или tagID (см. пример tagID=100) ничего не возвращает.
-```
- [ "дети","животные","Москва","лекарства" ] => [ 8,7,6,9 ]
- [ 9,8,7,6,100 ] => [ "животные","дети","Москва","лекарства" ]
- [ 100 ] => []
-```
-
-### GET /api/all/:include
-Получение списка тегов из БД в порядке релевантности.<br/>
-/api/all - вернет все теги из базы
-```
-[
-    "tag1",
-    "tag3",
-    "dsds",
-    "спасение",
-    "животные",
-    "Москва",
-    "дети",
-    "лекарства"
-]
-```
-?limit=3 - установит лимит в 3 тега
-```
-[
-    "tag1",
-    "tag3",
-    "dsds"
-]
-```
-/api/all/ва - вернет теги, которые содержат "ва"
-```
-[
-    "Москва",
-    "лекарства"
-]
-```
-
-### POST /api/tag/add
-Добавление тэгов.<br/>
-Принимает строковый массив tag.<br/>
-Возвращает массив записей созданных в БД.
-
-### POST /api/tag/edit
-Редактирование тэгов.<br/>
-Принимает строковый массив tag из 2 элементов: [oldTagValue, newTagValue].<br/>
-Возвращает результат редактирования в БД.
-```
-    ["asd","спасение"] -> изменит tag "asd" на "спасение"
-```
-
-### POST /api/tag/del
-Удаление тэгов.<br/>
-Принимает строковый или числовой массив tag.<br/>
-Если массив полностью числовой, считается, что это массив ID тэгов и удаление производится по найденным tagID<br/>
-Возвращает результат удаления в БД.
+- **[GET /api/tag/all/:include](documentation/endpoints/tag&source/GET_tag_all.md)**
+- **[POST /api/tag/find](documentation/endpoints/tag&source/POST_tag_find.md)**
+- **[POST /api/tag/add](documentation/endpoints/tag&source/POST_tag_add.md)**
+- **[POST /api/tag/edit](documentation/endpoints/tag&source/POST_tag_edit.md)**
+- **[POST /api/tag/del](documentation/endpoints/tag&source/POST_tag_del.md)**
 
 ## Settings
-Настройки для сети DAPP - адреса организаций и abi смарт-контрактов.
+Settings for DAPP: actual organizations addresses and smart-contracts abi.
 
-### POST /api/settings/setOrganizationList
-Сохраняет настройки сети<br/>
-Принимает 3 обязательных поля: type, list, abis<br/>
-type - `0` или `-1`. 0 - настройки по умолчанию. -1 - настройки для dev-окружения.
-list - строковый массив адресов организаций
-abis - объект с обязательными полями { Organization, CharityEvent, IncomingDonation, OpenCharityToken },
-в которых передаются abi.<br/>
-Возвращает 'Ok'.
-
-### GET /api/settings/getOrganizationList/:type
-Получение настроек сети<br/>
-type - `0` или `-1`. 0 - настройки по умолчанию. -1 - настройки для dev-окружения.
-Возвращает { type, list, abis }
+- **[GET /api/settings/getOrganizationList/:type](documentation/endpoints/tag&source/GET_settings_getorg.md)**
+- **[POST /api/settings/setOrganizationList](documentation/endpoints/tag&source/POST_settings_setorg.md)**

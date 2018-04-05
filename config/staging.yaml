@@ -2,12 +2,7 @@ env: staging
 address:
   internal: 'http://0.0.0.0:80'
   external: 'https://opencharity.staging.bankex.team'
-dirs:
-  main: '/oc_client_back/'
-  public: '/oc_client_back/public/'
-  settings: '/oc_client_back/settings/'
 mongoURI: 'mongodb://opch:testpass@oc_client_mongodb:27017/opch'
-metaServer: 'https://meta.staging.bankex.team'
 cors:
   - 'https://donatorscab.staging.bankex.team'
   - 'https://opencharity.staging.bankex.team'
