@@ -12,6 +12,7 @@ Backend API for oc_client.
 1. `git clone` this repo
 2. `cd oc_client_back`
 3. `npm install`
+4. configure yamls in `config` dir. There is `development.yaml.example` for edit.
 
 ## Run
 Environments run:
