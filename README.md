@@ -5,16 +5,16 @@ Backend API for OpenCharityDApp.
 
 # Getting Started
 
-## Require
+### Require
 * NodeJS version >= 8.9
 
-## Install
+### Install
 1. `git clone` this repo
 2. `cd oc_client_back`
 3. `npm install`
 4. configure yamls in `config` dir. There is `development.yaml.example` for edit.
 
-## Run
+### Run
 Environments run:
 * development: `npm run development`
 * staging:
@@ -26,10 +26,10 @@ Environments run:
     - `npm run build`
     - `npm run production`
 
-## Usage
+### Usage
 Development. Server running on 127.0.0.1:8082. Test page - /api/testapi
 
-## Tests
+### Tests
 1. Install mocha globally: `npm i mocha -g`
 2. Run server on your environment
 3. Environments:
@@ -37,22 +37,29 @@ Development. Server running on 127.0.0.1:8082. Test page - /api/testapi
     * staging: `npm run testStage`
     * production: `npm run testProd`
 
-## Demo
+### Demo
 https://opencharity.staging.bankex.team/api/testapi
 
-
 # API description
-## Tag & Source
-Source API equivalent Tag API, but /api/source/... and all fields have source instead tag.
 
-- [GET /api/tag/all/:include](documentation/endpoints/tag&source/GET_tag_all.md)
-- [POST /api/tag/find](documentation/endpoints/tag&source/POST_tag_find.md)
-- [POST /api/tag/add](documentation/endpoints/tag&source/POST_tag_add.md)
-- [POST /api/tag/edit](documentation/endpoints/tag&source/POST_tag_edit.md)
-- [POST /api/tag/del](documentation/endpoints/tag&source/POST_tag_del.md)
+* [Tag & Source](documentation/endpoints/tag&source.md)
+* [Settings](documentation/endpoints/settings.md)
 
-## Settings
-Settings for DAPP: actual organizations addresses and smart-contracts abi.
+# Other
+### Code of Conduct
+To have a more open and welcoming community, BankEx adheres to a [code of conduct](CODE_OF_CONDUCT.md).
 
-- [GET /api/settings/getOrganizationList/:type](documentation/endpoints/settings/GET_settings_getorg.md)
-- [POST /api/settings/setOrganizationList](documentation/endpoints/settings/POST_settings_setorg.md)
+### Communication
+* If you need help, you found a bug or you have a feature request, open an issue
+* If you want to contribute, see Contributing section.
+
+### Contributing
+* The best way to contribute is by submitting a pull request.
+* Fork it
+* Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
+
+### Authors
+* **Vlad Goltcer** - *Initial work* - [ye5no](https://github.com/ye5no)
+
+### License
+"OpenCharityDApp back" is available under the MIT license. See the LICENSE file for more info.
