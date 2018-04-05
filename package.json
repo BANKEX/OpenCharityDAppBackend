@@ -1,7 +1,7 @@
 {
   "name": "oc_client_back",
   "version": "1.0.0",
-  "description": "Back for oc_client",
+  "description": "Backend API for OpenCharityDApp",
   "repository": "https://git.bankex.team/open_charity/oc_client_back.git",
   "author": "ye5no",
   "license": "MIT",
@@ -19,7 +19,7 @@
     "buildWin": "npm run cleanWin && npm run build-server",
     "stagingWin": "cross-env NODE_ENV=staging NODE_PATH=./build node build/server.js",
     "productionWin": "cross-env NODE_ENV=production NODE_PATH=./build node build/server.js",
-    "testDev": "cross-env NODE_ENV=development mocha --timeout 15000 tests/index-test.js",
+    "testDev": "cross-env NODE_ENV=development mocha --timeout 10000 tests/index-test.js",
     "testStage": "cross-env NODE_ENV=staging mocha --timeout 10000 tests/index-test.js",
     "testProd": "cross-env NODE_ENV=production mocha --timeout 10000 tests/index-test.js"
   },

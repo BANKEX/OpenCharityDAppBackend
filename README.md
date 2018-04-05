@@ -1,7 +1,7 @@
 ![logo](https://opencharity.staging.bankex.team/api/logo.png)
-# oc_client_back
+# OpenCharityDApp back
 
-Backend API for oc_client.
+Backend API for OpenCharityDApp.
 
 # Getting Started
 
@@ -16,15 +16,15 @@ Backend API for oc_client.
 
 ## Run
 Environments run:
-    * development: `npm run development`
-    * staging:
-        - make dir build
-        - `npm run build`
-        - `npm run staging`
-    * production:
-        - make dir build
-        - `npm run build`
-        - `npm run production`
+* development: `npm run development`
+* staging:
+    - make dir build
+    - `npm run build`
+    - `npm run staging`
+* production:
+    - make dir build
+    - `npm run build`
+    - `npm run production`
 
 ## Usage
 Development. Server running on 127.0.0.1:8082. Test page - /api/testapi
@@ -37,19 +37,22 @@ Development. Server running on 127.0.0.1:8082. Test page - /api/testapi
     * staging: `npm run testStage`
     * production: `npm run testProd`
 
+## Demo
+https://opencharity.staging.bankex.team/api/testapi
+
 
 # API description
 ## Tag & Source
 Source API equivalent Tag API, but /api/source/... and all fields have source instead tag.
 
-- **[GET /api/tag/all/:include](documentation/endpoints/tag&source/GET_tag_all.md)**
-- **[POST /api/tag/find](documentation/endpoints/tag&source/POST_tag_find.md)**
-- **[POST /api/tag/add](documentation/endpoints/tag&source/POST_tag_add.md)**
-- **[POST /api/tag/edit](documentation/endpoints/tag&source/POST_tag_edit.md)**
-- **[POST /api/tag/del](documentation/endpoints/tag&source/POST_tag_del.md)**
+- [GET /api/tag/all/:include](documentation/endpoints/tag&source/GET_tag_all.md)
+- [POST /api/tag/find](documentation/endpoints/tag&source/POST_tag_find.md)
+- [POST /api/tag/add](documentation/endpoints/tag&source/POST_tag_add.md)
+- [POST /api/tag/edit](documentation/endpoints/tag&source/POST_tag_edit.md)
+- [POST /api/tag/del](documentation/endpoints/tag&source/POST_tag_del.md)
 
 ## Settings
 Settings for DAPP: actual organizations addresses and smart-contracts abi.
 
-- **[GET /api/settings/getOrganizationList/:type](documentation/endpoints/tag&source/GET_settings_getorg.md)**
-- **[POST /api/settings/setOrganizationList](documentation/endpoints/tag&source/POST_settings_setorg.md)**
+- [GET /api/settings/getOrganizationList/:type](documentation/endpoints/settings/GET_settings_getorg.md)
+- [POST /api/settings/setOrganizationList](documentation/endpoints/settings/POST_settings_setorg.md)
