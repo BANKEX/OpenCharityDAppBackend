@@ -1,10 +1,8 @@
 import render from 'koa-ejs';
 import { DIRS } from 'configuration';
-import path from 'path';
 
-const publicDIR = path.resolve(__dirname, '../../../', DIRS.public);
 const options = {
-  root: publicDIR,
+  root: DIRS.public,
   layout: false,
   viewExt: 'ejs',
   cache: false,

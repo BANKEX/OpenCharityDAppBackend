@@ -1,0 +1,6 @@
+env: development
+address:
+  internal: 'http://127.0.0.1:8082' # set internal docker address
+  external: 'http://127.0.0.1:8082' # set external address for browser enter
+mongoURI: 'mongodb://USER:PASSWORD@DB' # set your mongo
+cors: '*'

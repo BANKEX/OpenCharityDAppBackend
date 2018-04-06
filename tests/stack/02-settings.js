@@ -56,7 +56,7 @@ describe('--------Settings-----------', () => {
     };
     
     const response = await rp.post(options);
-    assert.equal(response, 'Ok');
+    assert.equal(JSON.parse(response).save, true);
   });
 
   it('GET getOrganizationList', async () => {
@@ -80,6 +80,6 @@ describe('--------Settings-----------', () => {
       }
     };
     const response = await rp.post(options);
-    assert.equal(response, 'Ok');
+    assert.equal(JSON.parse(response).save, true);
   });
 });
