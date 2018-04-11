@@ -1,7 +1,7 @@
 Source API equivalent Tag API, but /api/source/... and all fields have source instead tag.
 
 ### GET /api/tag/all/:include
-Получение списка тегов из БД в порядке релевантности.<br/>
+Получение списка тегов из БД по релевантности.<br/>
 /api/all - вернет все теги из базы
 ```
 [

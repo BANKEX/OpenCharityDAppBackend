@@ -1,5 +1,6 @@
 import setDIR from './stack/01-settings';
 import mongo from './stack/02-mongo';
+import syncro from './stack/03-dev-syncro';
 import server from 'server';
 
 export default async () => {
@@ -7,6 +8,7 @@ export default async () => {
     try {
       setDIR();
       await mongo();
+      if (process.env.NODE_ENV == 'development') await syncro();
       resolve();
     } catch (e) {
       console.log(e);

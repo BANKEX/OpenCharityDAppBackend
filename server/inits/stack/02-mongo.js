@@ -8,6 +8,5 @@ export default async () => {
   }, 200);
   await mongooseConnector(MONGO_URI);
   clearInterval(int);
-  process.stdout.write('connected');
-  console.log('');
+  process.stdout.write('connected\n');
 };

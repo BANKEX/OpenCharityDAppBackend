@@ -76,7 +76,12 @@ const all = async (ctx, collection) => {
     ? { [prop]: new RegExp(ctx.params.include, 'i') }
     : {};
   const lim = Number(ctx.query.limit);
-  const ret = await Collection.find(findRequest).sort({ use: -1 }).limit(lim);
+  const ret = await Collection.find(findRequest).sort({ use: -1 }).limit(lim).select({
+    _id: 0,
+    __v: 0,
+    use: 0,
+  });
+  // return ret;
   return ret.map((el) => (el[prop]));
 };
 
