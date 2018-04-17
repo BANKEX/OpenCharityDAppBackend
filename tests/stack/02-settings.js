@@ -4,6 +4,7 @@ const rp = require('request-promise');
 const config = require('config');
 
 const ADDRESS = config.get('address');
+const TOKEN = config.get('token');
 
 rp.defaults({
   simple: false,
@@ -43,7 +44,8 @@ describe('--------Settings-----------', () => {
     const body = {
       type,
       list,
-      abis: { Organization, CharityEvent, IncomingDonation, OpenCharityToken }
+      abis: { Organization, CharityEvent, IncomingDonation, OpenCharityToken },
+      token: TOKEN,
     };
 
     const options = {
@@ -71,6 +73,7 @@ describe('--------Settings-----------', () => {
   });
 
   it('POST setOrganizationList for Load savedState', async () => {
+    saveState.token = TOKEN;
     const options = {
       method: 'POST',
       uri: mainURL + '/api/settings/setOrganizationList',

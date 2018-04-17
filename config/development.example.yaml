@@ -4,3 +4,4 @@ address:
   external: 'http://127.0.0.1:8082' # set external address for browser enter
 mongoURI: 'mongodb://USER:PASSWORD@DB' # set your mongo
 cors: '*'
+token: 'TOKEN' # set token for post new settings

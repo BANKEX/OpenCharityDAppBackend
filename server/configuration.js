@@ -11,10 +11,12 @@ DIRS.settings = path.isAbsolute(config.get('dirs').settings)
 
 const MONGO_URI = config.get('mongoURI');
 const CORS = config.get('cors');
+const TOKEN = config.get('token');
 
 export {
   ADDRESS,
   DIRS,
   MONGO_URI,
   CORS,
+  TOKEN,
 };

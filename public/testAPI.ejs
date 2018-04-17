@@ -24,8 +24,8 @@
 <body>
   <div class="pan">
     <h1>oc_client_back testAPI</h1>
-
     <div class="panel-group" id="accordion">
+
       <div class="panel panel-default">
         <div class="panel-heading">
           <h4 class="panel-title">
@@ -141,7 +141,7 @@
             <div class="panel-body pan">
 
               <div class="row">
-                <div class="col-sm-3">
+                <div class="col-sm-2">
                   <form id="settings">
                     <div class="radio">
                       <label>
@@ -158,6 +158,9 @@
                   </form>
                 </div>
                 <div class="col-sm-3">
+                  <input class="form-control" type="text" id="tokenInput" placeholder="token">
+                </div>
+                <div class="col-sm-1">
                   <button class="btn btn-success" type="button" onClick="setList()">Set</button>
                 </div>
                 <div class="col-sm-6 resp" id="respSet"></div>
@@ -184,7 +187,6 @@
 
     </div>
   </div>
-
   <script src="testAPI.js"></script>
 </body>
 </html>

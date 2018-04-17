@@ -7,3 +7,4 @@ cors:
   - 'https://donatorscab.bankex.team'
   - 'https://opencharity.bankex.team'
   - 'https://meta.bankex.team'
+token: TOKENPROD

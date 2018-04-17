@@ -5,6 +5,7 @@ const errorMessages = {
   102: 'Re-authorization is not possible',
   103: 'E-mail already in use',
   104: 'Incorrect e-mail',
+  105: 'Wrong token',
   400: 'DB validation error',
   600: 'Wrong request',
   601: 'Required param missed in request',

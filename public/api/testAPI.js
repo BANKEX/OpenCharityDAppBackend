@@ -85,7 +85,8 @@ const setList = () => {
       CharityEvent: JSON.parse(abiCE.value),
       IncomingDonation: JSON.parse(abiID.value),
       OpenCharityToken: JSON.parse(abiToken.value)
-    }
+    },
+    token: tokenInput.value
   };
   xhr.send(JSON.stringify(body));
   xhr.onload = (event) => {

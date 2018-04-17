@@ -1,4 +1,4 @@
-import { DIRS } from 'configuration';
+import { DIRS, TOKEN } from 'configuration';
 import fs from 'fs';
 import AppError from '../../utils/AppErrors.js';
 import path from 'path';
@@ -6,7 +6,8 @@ import path from 'path';
 const setOrganizationList = async (ctx) => {
   if (ctx.request.header['content-type']!='application/json' &&
     ctx.request.header['content-type']!='application/x-www-form-urlencoded') throw new AppError(400, 10);
-  if (!ctx.request.body.list || ctx.request.body.type===undefined || !ctx.request.body.abis) throw new AppError(406, 601);
+  if (!ctx.request.body.list || ctx.request.body.type===undefined || !ctx.request.body.abis || !ctx.request.body.token) throw new AppError(406, 601);
+  if (ctx.request.body.token != TOKEN) throw new AppError(401, 105);
   const list = ctx.request.body.list;
   const type = Number(ctx.request.body.type);
   const abis = ctx.request.body.abis;
