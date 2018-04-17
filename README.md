@@ -1,5 +1,6 @@
-![logo](https://opencharity.staging.bankex.team/api/logo.png)
-# OpenCharityDApp back
+# BANKEX Foundation
+
+# OpenCharityDApp backend
 
 Backend API for OpenCharityDApp.
 
