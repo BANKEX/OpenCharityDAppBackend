@@ -16,5 +16,7 @@ RUN mkdir /oc_client_back/settings
 
 RUN sed -i "s@testpass@$MONGODB_STAGE_PASS@" /oc_client_back/config/staging.yaml
 RUN sed -i "s@testpass@$MONGODB_PROD_PASS@" /oc_client_back/config/production.yaml
+RUN sed -i "s@TOKENSTAGE@$TOKENSTAGE@" /oc_client_back/config/staging.yaml
+RUN sed -i "s@TOKENPROD@$TOKENPROD@" /oc_client_back/config/staging.yaml
 
 EXPOSE 80

@@ -7,10 +7,6 @@ stages:
   - deploy-prod
   - tests-prod
 
-cache:
-  paths:
-    - node_modules/
-
 setup:
   image: node:alpine
   stage: setup
@@ -20,6 +16,10 @@ setup:
     - npm install --quiet node-gyp -g
     - npm install
     - npm rebuild bcrypt --build-from-source
+  cache:
+    key: "$CI_PROJECT_ID"
+    paths:
+      - node_modules/
 
 build-node:
   image: node:alpine
@@ -34,7 +34,12 @@ build-node:
       - public
       - server
       - package.json
-    expire_in: 12h
+    expire_in: 7d
+  cache:
+    key: "$CI_PROJECT_ID"
+    paths:
+      - node_modules/
+    policy: pull
 
 release:
   image: docker:latest
@@ -42,9 +47,11 @@ release:
   before_script:
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
     - sed -i '3i\ENV MONGODB_STAGE_PASS '$MONGODB_STAGE_PASS'\' docker/Dockerfile ; sed -i '3i\ENV MONGODB_PROD_PASS '$MONGODB_PROD_PASS'\' docker/Dockerfile
+    - sed -i '3i\ENV TOKENSTAGE '$TOKENSTAGE'\' docker/Dockerfile ; sed -i '3i\ENV TOKENPROD '$TOKENPROD'\' docker/Dockerfile
   script:
     - docker build -q -f docker/Dockerfile -t $CI_REGISTRY_IMAGE .
     - docker push $CI_REGISTRY_IMAGE
+  cache: {}
 
 deploy_stage:
   stage: deploy-stage
@@ -76,6 +83,8 @@ deploy_stage:
     url: https://opencharity.staging.bankex.team
   when: manual
   allow_failure: false
+  cache: {}
+  dependencies: []
 
 tests-stage:
   image: docker:latest
@@ -92,6 +101,8 @@ tests-stage:
     - echo "$DO_DOCKER_KEY_STAGE" > $DOCKER_CERT_PATH/key.pem
   script:
     - docker exec -i -e NODE_ENV=$NODE_ENV oc_client_back sh -c "npm i mocha -g && npm run test"
+  cache: {}
+  dependencies: []
 
 deploy_prod:
   stage: deploy-prod
@@ -125,6 +136,8 @@ deploy_prod:
     url: https://opencharity.bankex.team
   when: manual
   allow_failure: false
+  cache: {}
+  dependencies: []
 
 tests-prod:
   image: docker:latest
@@ -143,4 +156,6 @@ tests-prod:
     - docker exec -i -e NODE_ENV=$NODE_ENV oc_client_back sh -c "npm i mocha -g && npm run test"
   only:
     - production
+  cache: {}
+  dependencies: []
 
