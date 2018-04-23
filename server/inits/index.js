@@ -9,7 +9,7 @@ export default async () => {
     try {
       setDIR();
       await mongo();
-      if (process.env.NODE_ENV == 'development') await syncro();
+      // if (process.env.NODE_ENV == 'development') await syncro();
       // swagger();
       resolve();
     } catch (e) {
