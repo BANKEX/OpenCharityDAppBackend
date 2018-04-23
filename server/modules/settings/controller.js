@@ -26,6 +26,7 @@ const setOrganizationList = async (ctx) => {
   ctx.body = JSON.stringify({save: true});
 };
 
+
 const getOrganizationList = async (ctx) => {
   const type = Number(ctx.params.type);
   if (type!=0 && type!=-1) throw new AppError(406, 600);

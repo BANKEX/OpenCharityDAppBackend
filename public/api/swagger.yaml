@@ -1,0 +1,163 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: OpenCharity Backend API
+  description: Backend API for OpenCharityDApp.  You can find out more at [https://github.com/BANKEX/OpenCharityDAppBackend](https://github.com/BANKEX/OpenCharityDAppBackend)
+tags:
+  - name: Settings
+    description: Settings for other OpenCharity project servers
+  - name: Tag
+    description: Tags API (requests in development)
+  - name: Source
+    description: Source API (requests in development)
+components:
+  schemas:
+    Settings:
+      type: object
+      properties:
+        type:
+          type: integer
+          description: 0 - default, -1 - development
+          enum:
+            - 0
+            - -1
+        list:
+          type: array
+          description: list of addresses organizations
+          items:
+            type: string
+        abis:
+          type: object
+          properties:
+            Organization:
+              description: Organization ABI
+              type: object
+            CharityEvent:
+              description: CharityEvent ABI
+              type: object
+            IncomingDonation:
+              description: IncomingDonation ABI
+              type: object
+            OpenCharityToken:
+              description: OpenCharityToken ABI
+              type: object
+    Error:
+      type: object
+      properties:
+        status:
+          type: integer
+        message:
+          type: string
+paths:
+  '/api/settings/getOrganizationList/{type}':
+    get:
+      tags:
+        - Settings
+      summary: Get settings
+      parameters:
+        - name: type
+          in: path
+          description: 'Setting type: "0"- default or "-1" - development'
+          required: true
+          schema:
+            type: integer
+            enum:
+              - 0
+              - -1
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Settings'
+        default:
+          description: 'Error'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/api/settings/setOrganizationList':
+    post:
+      tags:
+        - Settings
+      summary: Set new settings
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/Settings'
+                - type: object
+                  properties:
+                    token:
+                      type: string
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  save:
+                    type: boolean
+        default:
+          description: 'Error'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/api/tag/all':
+    get:
+      tags:
+        - Tag
+      summary: Development get all tags
+  '/api/tag/find':
+    post:
+      tags:
+        - Tag
+      summary: Development find tag
+  '/api/tag/add':
+    post:
+      tags:
+        - Tag
+      summary: Development add tag
+  '/api/tag/del':
+    post:
+      tags:
+        - Tag
+      summary: Development del tag
+  '/api/tag/edit':
+    post:
+      tags:
+        - Tag
+      summary: Development edit tag
+  '/api/source/all':
+    get:
+      tags:
+        - Source
+      summary: Development get all sources
+  '/api/source/find':
+    post:
+      tags:
+        - Source
+      summary: Development find source
+  '/api/source/add':
+    post:
+      tags:
+        - Source
+      summary: Development add source
+  '/api/source/del':
+    post:
+      tags:
+        - Source
+      summary: Development del source
+  '/api/source/edit':
+    post:
+      tags:
+        - Source
+      summary: Development edit source
+
+

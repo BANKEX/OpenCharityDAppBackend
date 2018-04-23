@@ -2,6 +2,7 @@ import setDIR from './stack/01-settings';
 import mongo from './stack/02-mongo';
 import syncro from './stack/03-dev-syncro';
 import server from 'server';
+// import swagger from './stack/04-swagger';
 
 export default async () => {
   return new Promise(async (resolve, reject) => {
@@ -9,6 +10,7 @@ export default async () => {
       setDIR();
       await mongo();
       if (process.env.NODE_ENV == 'development') await syncro();
+      // swagger();
       resolve();
     } catch (e) {
       console.log(e);

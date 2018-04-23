@@ -5,8 +5,9 @@ import settings from './settings';
 
 const router = new Router({ prefix: '/api' });
 
-router.use(tag);
-router.use(source);
-router.use(settings);
+router
+  .use(tag)
+  .use(source)
+  .use(settings);
 
 export default router.routes();
