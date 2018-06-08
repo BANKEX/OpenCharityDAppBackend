@@ -1,0 +1,172 @@
+version: 2
+jobs:
+  setup:
+    docker:
+      - image: bankexlabs/node:9-alpine
+
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package.json" }}
+          - v1-dependencies-
+
+      - run:
+          name: Install node modules
+          command: |
+            npm install --quiet node-gyp -g
+            npm install
+            npm rebuild bcrypt --build-from-source
+            npm rebuild node-sass
+
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+
+  build-node:
+    docker:
+      - image: bankexlabs/node:9-alpine
+
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package.json" }}
+          - v1-dependencies-
+
+      - run:
+          name: Build node
+          command: |
+            npm run build
+
+      - persist_to_workspace:
+          root: .
+          paths:
+            - build
+            - node_modules/
+            - config
+            - public
+            - server
+            - package.json
+
+  build-docker-image:
+    machine: true
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - run:
+          name: Build-Push image
+          command: |
+            sed -i '3i\ENV MONGODB_STAGE_PASS '$MONGODB_STAGE_PASS'\' Dockerfile ; sed -i '3i\ENV MONGODB_PROD_PASS '$MONGODB_PROD_PASS'\' Dockerfile
+            sed -i '3i\ENV TOKENSTAGE '$TOKENSTAGE'\' Dockerfile ; sed -i '3i\ENV TOKENPROD '$TOKENPROD'\' Dockerfile
+            docker login -u $DHLOGIN -p $DHPASS
+            docker build -t $IMAGE .
+            docker push $IMAGE
+
+  deploy-stage:
+    machine: true
+    environment:
+      NODE_ENV: "staging"
+      NODE_PATH: "./build"
+    steps:
+      - checkout
+      - run:
+          name: Deploy to stage
+          command: |
+            mkdir -p certs
+            echo -e $DOCKERCA > certs/ca.pem
+            echo -e $DOCKERCERT > certs/cert.pem
+            echo -e $DOCKERKEY > certs/key.pem
+            export DOCKER_TLS_VERIFY="1"
+            export DOCKER_HOST="tcp://$STAGEHOST:2376"
+            export DOCKER_CERT_PATH="/home/circleci/project/certs"
+            docker login -u $DHLOGIN -p $DHPASS
+            docker-compose -f docker-compose.yml down
+            docker rmi $IMAGE || echo "image not exist"
+            docker pull $IMAGE
+            docker-compose -f docker-compose.yml up -d
+
+  deploy-prod:
+    machine: true
+    environment:
+      NODE_ENV: "production"
+      NODE_PATH: "./build"
+    steps:
+      - checkout
+      - run:
+          name: Deploy to prod
+          command: |
+            mkdir -p certs
+            echo -e $DOCKERCA > certs/ca.pem
+            echo -e $DOCKERCERT > certs/cert.pem
+            echo -e $DOCKERKEY > certs/key.pem
+            export DOCKER_TLS_VERIFY="1"
+            export DOCKER_HOST="tcp://$PRODHOST:2376"
+            export DOCKER_CERT_PATH="/home/circleci/project/certs"
+            docker login -u $DHLOGIN -p $DHPASS
+            docker-compose -f docker-compose-prod.yml down
+            docker rmi $IMAGE:prod || echo "image not exist"
+            docker pull $IMAGE:prod
+            docker-compose -f docker-compose-prod.yml up -d
+
+workflows:
+  version: 2
+  stage-workflow:
+    jobs:
+      - setup:
+          filters:
+            branches:
+              ignore: master
+      - build-node:
+          filters:
+            branches:
+              ignore: master
+          requires:
+            - setup
+      - build-docker-image:
+          requires:
+            - build-node
+          filters:
+            branches:
+              ignore: master
+      - approval-step:
+          type: approval
+          requires:
+            - build-docker-image
+      - deploy-stage:
+          requires:
+            - approval-step
+          filters:
+            branches:
+              ignore: master
+
+  prod-workflow:
+    jobs:
+      - setup:
+          filters:
+            branches:
+              only: master
+      - build-node:
+          filters:
+            branches:
+              only: master
+          requires:
+            - setup
+      - build-docker-image:
+          requires:
+            - build-node
+          filters:
+            branches:
+              only: master
+      - approval-step:
+          type: approval
+          requires:
+            - build-docker-image
+      - deploy-prod:
+          requires:
+            - approval-step
+          filters:
+            branches:
+              only: master

@@ -1,13 +1,13 @@
 version: '3'
 
 volumes:
-    oc_client_mongodb_data:
-    oc_client_mongodb_config:
-    oc_client_settings:
+    oc_client_mongodb_data_new:
+    oc_client_mongodb_config_new:
+    oc_client_settings_new:
 
 services:
-  oc_client_back:
-    image: $CI_REGISTRY_IMAGE
+  oc_client_back_new:
+    image: $IMAGE
     container_name: oc_client_back
     restart: always
     expose:
@@ -15,19 +15,19 @@ services:
     environment:
       NODE_ENV: $NODE_ENV
       NODE_PATH: $NODE_PATH
-    command: npm run staging
+    command: npm run production
     depends_on:
-      - oc_client_mongodb
+      - oc_client_mongodb_new
     volumes:
-      - oc_client_settings:/oc_client_back/settings
+      - oc_client_settings_new:/oc_client_back/settings
 
-  oc_client_mongodb:
+  oc_client_mongodb_new:
     image: aashreys/mongo-auth:latest
-    container_name: oc_client_mongodb
+    container_name: oc_client_mongodb_new
     restart: always
     volumes: 
-      - oc_client_mongodb_data:/data/db
-      - oc_client_mongodb_config:/data/configdb
+      - oc_client_mongodb_data_new:/data/db
+      - oc_client_mongodb_config_new:/data/configdb
     expose:
       - "27017"
     environment:
@@ -36,7 +36,7 @@ services:
       MONGODB_ADMIN_PASS: $MONGODB_ADMIN_PASS
       MONGODB_APPLICATION_DATABASE: opch
       MONGODB_APPLICATION_USER: opch
-      MONGODB_APPLICATION_PASS: $MONGODB_STAGE_PASS
+      MONGODB_APPLICATION_PASS: $MONGODB_PROD_PASS
 
 networks:
   default:
