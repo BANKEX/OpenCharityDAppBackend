@@ -59,8 +59,6 @@ jobs:
       - run:
           name: Build-Push image
           command: |
-            sed -i '3i\ENV MONGODB_STAGE_PASS '$MONGODB_STAGE_PASS'\' Dockerfile ; sed -i '3i\ENV MONGODB_PROD_PASS '$MONGODB_PROD_PASS'\' Dockerfile
-            sed -i '3i\ENV TOKENSTAGE '$TOKENSTAGE'\' Dockerfile ; sed -i '3i\ENV TOKENPROD '$TOKENPROD'\' Dockerfile
             docker login -u $DHLOGIN -p $DHPASS
             docker build -t $IMAGE .
             docker push $IMAGE
@@ -107,8 +105,8 @@ jobs:
             export DOCKER_CERT_PATH="/home/circleci/project/certs"
             docker login -u $DHLOGIN -p $DHPASS
             docker-compose -f docker-compose-prod.yml down
-            docker rmi $IMAGE:prod || echo "image not exist"
-            docker pull $IMAGE:prod
+            docker rmi $IMAGE || echo "image not exist"
+            docker pull $IMAGE
             docker-compose -f docker-compose-prod.yml up -d
 
 workflows:
