@@ -19,8 +19,7 @@ services:
       MONGODB_PROD_PASS: $MONGODB_PROD_PASS
       TOKENSTAGE: $TOKENSTAGE
       TOKENPROD: $TOKENPROD
-    entrypoint: /oc_client_back/entrypoint.sh
-    command: npm run staging
+    command: sh -c "/oc_client_back/entrypoint.sh && npm run staging"
     depends_on:
       - oc_client_mongodb_new
     volumes:
