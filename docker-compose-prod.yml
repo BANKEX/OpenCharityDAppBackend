@@ -15,7 +15,11 @@ services:
     environment:
       NODE_ENV: $NODE_ENV
       NODE_PATH: $NODE_PATH
-    command: npm run production
+      MONGODB_STAGE_PASS: $MONGODB_STAGE_PASS
+      MONGODB_PROD_PASS: $MONGODB_PROD_PASS
+      TOKENSTAGE: $TOKENSTAGE
+      TOKENPROD: $TOKENPROD
+    command: sh -c "/oc_client_back/entrypoint.sh && npm run production"
     depends_on:
       - oc_client_mongodb_new
     volumes:
